@@ -1,16 +1,25 @@
 from api.Kiwoom import *
 import sys
+from strategy.RSIStrategy import *
 
 app = QApplication(sys.argv)
-kiwoom = Kiwoom()
 
-# 7. 실시간 정보 조회
-# kiwoom.set_real_reg("1000", "", get_fid("장운영구분"), "0")
-fids = get_fid("체결시간")
-codes = '005930;007700;006600;'
-kiwoom.set_real_reg("1000", codes, fids, "0")
+rsi_strategy = RSIStrategy()
+rsi_strategy.start()
 
 app.exec_()
+
+# # 1~7 까지 주석을 테스트할 경우 공통으로 사용
+# app = QApplication(sys.argv)
+# kiwoom = Kiwoom()
+
+# 7. 실시간 정보 조회
+# # kiwoom.set_real_reg("1000", "", get_fid("장운영구분"), "0")
+# fids = get_fid("체결시간")
+# codes = '005930;007700;006600;'
+# kiwoom.set_real_reg("1000", codes, fids, "0")
+#
+# app.exec_()
 
 # # 6. 게좌잔고조회
 # position = kiwoom.get_balance()

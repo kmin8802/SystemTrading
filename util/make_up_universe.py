@@ -104,13 +104,20 @@ def get_universe():
     df.replace(mapping, regex=True, inplace=True)
 
     # 사용할 column들 설정
-    cols = ['거래량', '매출액', '매출액증가율', 'ROE', 'PER']
+    # cols = ['거래량', '매출액', '매출액증가율', 'ROE', 'PER']
+
+    # 수정 부분
+    cols = ['현재가', '거래량', '매출액', '매출액증가율', 'ROE', 'PER', 'PBR', '자산총계', '부채총계']
 
     # column들을 숫자타입으로 변환(Naver Finance를 크롤링해온 데이터는 str 형태)
     df[cols] = df[cols].astype(float)
 
     # 유니버스 구성 조건 (1)~(4)를 만족하는 데이터 가져오기
-    df = df[(df['거래량'] > 0) & (df['매출액'] > 0) & (df['매출액증가율'] > 0) & (df['ROE'] > 0) & (df['PER'] > 0) & (~df.종목명.str.contains("지주")) & (~df.종목명.str.contains("홀딩스"))]
+    # df = df[(df['거래량'] > 0) & (df['매출액'] > 0) & (df['매출액증가율'] > 0) & (df['ROE'] > 0) & (df['PER'] > 0) & (~df.종목명.str.contains("지주")) & (~df.종목명.str.contains("홀딩스"))]
+
+    # 수정 부분
+    df = df[(df['거래량'] > 0) & (df['매출액'] > 0) & (df['ROE'] > 0) & (df['PBR'] < 2) & (df['부채총계']/(df['자산총계']-df['부채총계'])*100 < 250)]
+    # PBR<2, 부채비율(250이하) 추가
 
     # PER의 역수
     df['1/PER'] = 1 / df['PER']
